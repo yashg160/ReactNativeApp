@@ -8,7 +8,7 @@ import { View, Platform, Image, StyleSheet, ScrollView, Text } from 'react-nativ
 import { createStackNavigator, createDrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import {connect} from 'react-redux';
-import {fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreators';
+import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -30,10 +30,11 @@ const MenuNavigator = createStackNavigator({
     Menu: {
         screen: Menu,
         navigationOptions: ({ navigation }) => ({
-            headerLeft: <Icon name='menu'size={24} color='white' onPress={() => navigation.toggleDrawer()}/>
-        })},
+            headerLeft: <Icon name='menu' size={24} color='white' onPress={() => navigation.toggleDrawer()} />
+        })
+    },
     Dishdetail: { screen: Dishdetail },
-    }, {
+}, {
         initialRouteName: "Menu",
         navigationOptions: {
             headerStyle: {
@@ -109,7 +110,7 @@ const CustomDrawerContentComponent = (props) => (
             </View>
             <DrawerItems {...props} />
         </SafeAreaView>
-        
+
     </ScrollView>
 );
 
@@ -120,7 +121,7 @@ const MainNavigator = createDrawerNavigator({
             title: 'Home',
             drawLabel: 'Home',
             drawerIcon: ({ tintColor }) => (
-                <Icon 
+                <Icon
                     name='home'
                     type='font-awesome'
                     size={24}
@@ -174,11 +175,11 @@ const MainNavigator = createDrawerNavigator({
             )
         }
     }
-    
+
 }, {
         drawerBackgroundColor: '#D1C4E9',
         contentComponent: CustomDrawerContentComponent
-});
+    });
 
 class Main extends Component {
 
