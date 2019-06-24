@@ -3,10 +3,11 @@ import { View, Text, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import { postFavorite } from '../redux/ActionCreators';
 
 function RenderDish(props) {
     const dish = props.dish;
-
+    console.info("RenderDish Method");
     if(dish != null) {
         return(
             <Card
@@ -32,16 +33,21 @@ function RenderDish(props) {
 }
 
 const mapStateToProps = state => {
+    console.info("mapStateToProps");
     return {
         dishes: state.dishes,
-        comments: state.comments
+        comments: state.comments,
+        favorites: state.favorites
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    postFavorite: (dishId) => dispatch(postFavorite(dishId))
+})
 
 
 function RenderComments(props) {
     const comments = props.comments;
-
     const renderCommentItem = ({ item, index }) => {
         return (
             <View key={index} style={{ margin: 10 }}>
@@ -65,15 +71,9 @@ function RenderComments(props) {
 
 class Dishdetail extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            favorites: []
-        };
-    }
-
     markFavorite(dishId) {
-        this.setState({ favorites: this.state.favorites.concat(dishId) });
+        console.info("markFavorite");
+        this.props.postFavorite(dishId);
     }
 
     static navigationOptions = {
@@ -81,11 +81,12 @@ class Dishdetail extends Component {
     }
 
     render() {
+        console.info("Render Method");
         const dishId = this.props.navigation.getParam('dishId', '');
         return (
             <ScrollView>
                 <RenderDish dish={this.props.dishes.dishes[+dishId]}
-                    favorite={this.state.favorites.some(el => el === dishId)}
+                    favorite={this.props.favorites.some(el => el === dishId)}
                     onPress={() => this.markFavorite(dishId)}/>
                 <RenderComments comments={this.props.comments.comments.filter((comment) => comment.dishId === dishId)} />
             </ScrollView>
@@ -94,4 +95,4 @@ class Dishdetail extends Component {
     
 }
 
-export default connect(mapStateToProps)(Dishdetail);
+export default connect(mapStateToProps, mapDispatchToProps)(Dishdetail);
