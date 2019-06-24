@@ -11,7 +11,7 @@ export const ConfigureStore = () => {
         combineReducers({
             dishes,
             comments,
-            prmotions,
+            promotions,
             leaders
         }),
         applyMiddleware(thunk, logger)

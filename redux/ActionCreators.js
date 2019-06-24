@@ -74,7 +74,7 @@ export const dishesFailed = (errmess) => ({
 export const fetchPromos = () => (dispatch) => {
     dispatch(promosLoading());
 
-    return fetch(baseUrl + 'promos')
+    return fetch(baseUrl + 'promotions')
         .then(response => {
             if (response.ok) {
                 return response;
@@ -111,10 +111,10 @@ export const promosFailed = (errmess) => ({
 
 export const fetchLeaders = () => (dispatch) => {
     dispatch(leadersLoading());
-
     return fetch(baseUrl + 'leaders')
         .then(response => {
             if (response.ok) {
+                console.log("From ActionCreators: " + response);
                 return response;
             }
             else {
