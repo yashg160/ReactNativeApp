@@ -4,6 +4,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
 
 function History() {
     return (
@@ -31,6 +32,7 @@ class About extends Component {
 
     render() {
         const renderLeaderItem = ({ item, index }) => {
+
             return (
                 <ListItem 
                     key={index}
@@ -41,24 +43,45 @@ class About extends Component {
                 />
             );
         }
-        
-        return (
-            <View>
+
+        if (this.props.leaders.isLoading) {
+            return (
                 <ScrollView>
                     <History />
                     <Card
-                        title="Corporate Leadership"
-                    >
+                        title='Corporate Leadership'>
+                        <Loading />
+                    </Card>
+                </ScrollView>
+            );
+        }
+        else if (this.props.leaders.errMess) {
+            return (
+                <ScrollView>
+                    <History />
+                    <Card
+                        title='Corporate Leadership'>
+                        <Text>{this.props.leaders.errMess}</Text>
+                    </Card>
+                </ScrollView>
+            );
+        }
+        
+        else {
+            return (
+                <ScrollView>
+                    <History />
+                    <Card
+                        title='Corporate Leadership'>
                         <FlatList
                             data={this.props.leaders.leaders}
                             renderItem={renderLeaderItem}
                             keyExtractor={item => item.id.toString()}
                         />
-
                     </Card>
                 </ScrollView>
-            </View>
-        );
+            );
+        }
     }
 }
 
