@@ -1,15 +1,15 @@
-import { Tile } from 'react-native-elements';
+import {Tile} from 'react-native-elements';
 import { FlatList } from 'react-native';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { baseUrl } from '../shared/baseUrl';
-import { Loading } from './LoadingComponent';
+import {baseUrl} from '../shared/baseUrl';
 
 const mapStateToProps = state => {
     return {
         dishes: state.dishes
     }
 }
+
 class Menu extends Component {
 
     static navigationOptions = {
@@ -31,29 +31,13 @@ class Menu extends Component {
         }
 
         const { navigate } = this.props.navigation;
-
-        if (this.props.dishes.isLoading) {
-            return (
-                <Loading />
-            );
-        }
-
-        else if (this.props.dishes.errMess) {
-            return (
-                <View>
-                    <Text>{this.props.errMess}</Text>
-                </View>
-            );
-        }
-        else {
-            return (
-                <FlatList
-                    data={this.props.dishes.dishes}
-                    renderItem={renderMenuItem}
-                    keyExtractor={item => item.id.toString()}
-                />
-            );
-        }
+        return (
+            <FlatList
+                data={this.props.dishes.dishes}
+                renderItem={renderMenuItem}
+                keyExtractor={item => item.id.toString()}
+            />
+        );
     }
 }
 
