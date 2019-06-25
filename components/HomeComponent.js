@@ -65,7 +65,6 @@ class Home extends Component {
 
     animate() {
         console.info(this.animatedValue);
-        //av = new Animated.Value(0);
         this.animatedValue.setValue(0);
         Animated.timing(
             this.animatedValue,
