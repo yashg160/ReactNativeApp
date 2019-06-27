@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Text, View, StyleSheet, ScrollView, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
+import { Permissions, Notifications } from 'expo'; 
 
 class Reservation extends Component {
 
@@ -30,7 +31,7 @@ class Reservation extends Component {
             'Number of Guests: ' + this.state.guests + '\nSmoking? ' + this.state.smoking + '\nDate and Time: ' + this.state.date,
             [
                 { text: 'Cancel', style: 'cancel', onPress: () => console.log('Reservation alert cancelled') },
-                { text: 'OK', onPress: () => { console.log('Current State: ' + this.state); this.resetForm(); } }
+                { text: 'OK', onPress: () => { console.log('Current State: ' + this.state); this.resetForm(); this.presentLocalNotification(this.state.date) } }
             ]
         )
     }
@@ -40,6 +41,34 @@ class Reservation extends Component {
             guests: 1,
             smoking: false,
             date: ''
+        })
+    }
+
+    async obtainNotificationPermission() {
+
+        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        if(permission.status !== 'granted') {
+            permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permissio not granted to show notification');
+            }
+        }
+        return permission;
+    }
+
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermission();
+        Notifications.presentLocalNotificationAsync({
+            title: 'Your Reservation',
+            body: 'Reservation for ' + date + ' requested',
+            ios: {
+                sound: true
+            },
+            android: {
+                sound: true,
+                vibrate: true, 
+                color: '#512DA8'
+            }
         })
     }
 
